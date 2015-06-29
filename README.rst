@@ -31,3 +31,9 @@ Using it
    product, _ = Product.objects.get_or_create(name="Product1", reference="REF1")                
    product.price = 8  
    product.save()             
+
+
+Work in progress
+-------------------
+This is a work in progress. I'm implementing only the models that I would need. Extra help is welcome.
+
