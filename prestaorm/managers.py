@@ -1,8 +1,7 @@
 import copy
 
 from .service import Api
-from .utils import (classproperty, convert_to_model_instance,
-                    convert_to_model_instances)
+from .utils import convert_to_model_instance, convert_to_model_instances
 
 
 class BaseManager(object):
@@ -36,12 +35,13 @@ class BaseManager(object):
 
         return (obj, True)
 
+    def _to_models(self, items, list=True):
+        fn = convert_to_model_instances if list else convert_to_model_instance
+        return fn(items, self.model)
+
     def get(self, pk=None, **kwargs):
         if pk is not None:
-            return convert_to_model_instance(
-                self.service.get(pk, self.model.resource),
-                self.model
-            )
+            return self._to_models(self.service.get(pk, self.model.resource), False)
 
         return self.filter(**kwargs).first()
 
@@ -56,12 +56,8 @@ class BaseManager(object):
         return [i for i in self.all()]
 
     def all(self,):
-        return convert_to_model_instances(
-            self.service.get_list(
-                self.model.resource,
-                params=self.get_params()
-            ),
-            self.model)
+        return self._to_models(
+            self.service.get_list(self.model.resource, params=self.get_params()))
 
     def __repr__(self,):
         return str(self.all())
@@ -86,7 +82,6 @@ class BaseManager(object):
             for k, v in self._filter.items():
                 params["filter[{}]".format(k)] = v
 
-        print params
         return params
 
     def values(self, *args):

@@ -18,7 +18,7 @@ Using it
 .. code-block:: python
    
    # Configure
-   from prestaorm.service import Api
+   from prestaorm import Api
    Api.config(url, key)
                 
    # Use the api
