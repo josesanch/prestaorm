@@ -14,9 +14,9 @@ class BaseManager(object):
         self._limits = []
 
     def create(self,):
-        return convert_to_model_instance(
+        return self._to_models(
             self.service.new(self.model.resource),
-            self.model,
+            list=False,
             unwrap=True)
 
     def get_or_create(self, commit=False, **kwargs):
@@ -38,9 +38,9 @@ class BaseManager(object):
 
         return (obj, True)
 
-    def _to_models(self, items, list=True):
+    def _to_models(self, items, list=True, unwrap=False):
         fn = convert_to_model_instances if list else convert_to_model_instance
-        return fn(items, self.model)
+        return fn(items, self.model, unwrap=unwrap)
 
     def get(self, pk=None, **kwargs):
         if pk is not None:

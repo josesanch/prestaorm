@@ -23,7 +23,7 @@ class CustomLookup(etree.CustomElementClassLookup):
         return self.node
 
 
-def convert_to_model_instances(xml, model):
+def convert_to_model_instances(xml, model, unwrap=False):
     children = etree.XML(xml).getchildren()
     if children:
         return [convert_to_model_instance(etree.tostring(item), model)
