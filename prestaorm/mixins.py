@@ -51,7 +51,7 @@ class MixinModelActions(object):
         resource = self.resource
         xml = self.get_xml()
 
-        if self.id is not None:
+        if self.id and self.id.text is not None:
             return manager.service.update(resource, xml, self.id.text)
         else:
             return manager.service.create(resource, xml)
