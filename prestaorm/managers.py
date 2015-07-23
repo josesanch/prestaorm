@@ -19,7 +19,7 @@ class BaseManager(object):
             self.model,
             unwrap=True)
 
-    def get_or_create(self, **kwargs):
+    def get_or_create(self, commit=False, **kwargs):
         obj = self.get(**kwargs)
         if obj:
             return (obj, False)
@@ -32,6 +32,9 @@ class BaseManager(object):
                 node.set_language(v)
             else:
                 setattr(obj, k, v)
+
+        if commit:
+            obj = obj.save()
 
         return (obj, True)
 
